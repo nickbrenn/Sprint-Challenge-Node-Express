@@ -11,7 +11,7 @@ router.get("/", (req, res) => {
       res.json(projects);
     })
     .catch(err => {
-      res.status(500).json({ error: err });
+      res.status(500).json({ errorMessage: "Projects could not be gotten." });
     });
 });
 
@@ -23,7 +23,9 @@ router.get("/:id", (req, res) => {
       res.json(project);
     })
     .catch(err => {
-      res.status(500).json({ error: err });
+      res
+        .status(500)
+        .json({ errorMessage: "The project with this id could not be found." });
     });
 });
 
@@ -46,12 +48,11 @@ router.post("/", (req, res) => {
     description.length <= 128
   ) {
     db.insert(body).then(project => {
-      db
-        .get(project.id)
-        .then(newProject => {
-          res.json(newProject);
-        })
-        .catch(err => res.json({ error: err }));
+      db.get(project.id).then(newProject => {
+        res.json(newProject);
+      });
+      // not sure if the below line ever activates and does anything
+      // .catch(err => res.json({ error: err }));
     });
   } else {
     if (name && description) {
@@ -101,12 +102,11 @@ router.put("/:id", (req, res) => {
     (undefined !== body.name && body.name.length <= 128)
   ) {
     db.update(id, body).then(project => {
-      db
-        .get(project.id)
-        .then(newProject => {
-          res.json(newProject);
-        })
-        .catch(err => res.json({ error: err }));
+      db.get(project.id).then(newProject => {
+        res.json(newProject);
+      });
+      // not sure if the below line ever activates and does anything
+      // .catch(err => res.json({ error: err }));
     });
   } else {
     if (name && description) {
