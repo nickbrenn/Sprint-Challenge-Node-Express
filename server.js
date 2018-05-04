@@ -13,7 +13,7 @@ server.use("/actions", actionRoutes);
 server.use("/projects", projectRoutes);
 
 server.get("/", (req, res) => {
-  res.send("The API is up");
+  res.send("Go to /projects or /actions");
 });
 
 server.listen(5000, () => console.log("\nThe server is a listenin'\n"));
